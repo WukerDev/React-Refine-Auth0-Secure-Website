@@ -61,13 +61,7 @@ export const Login: React.FC = () => {
         justifyContent="center"
         flexDirection="column"
       >
-        <ThemedTitleV2
-          collapsed={false}
-          wrapperStyles={{
-            fontSize: "22px",
-            justifyContent: "center",
-          }}
-        />
+
 
         <GoogleButton />
 
