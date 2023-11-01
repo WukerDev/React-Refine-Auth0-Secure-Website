@@ -38,7 +38,9 @@ import {
   CategoryList,
   CategoryShow,
 } from "./pages/categories";
+
 import { Login } from "./pages/login";
+import Registration from "./pages/Registration";
 import { parseJwt } from "./utils/parse-jwt";
 
 const axiosInstance = axios.create();
@@ -214,6 +216,7 @@ function App() {
                   }
                 >
                   <Route path="/login" element={<Login />} />
+                  <Route path="/registration" element={<Registration />} />
                 </Route>
               </Routes>
 

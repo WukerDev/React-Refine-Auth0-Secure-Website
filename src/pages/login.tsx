@@ -1,10 +1,14 @@
 import { useLogin } from "@refinedev/core";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { ThemedTitleV2 } from "@refinedev/mui";
+import Registration from "./Registration";
+import { Link } from 'react-router-dom';
 
 import { CredentialResponse } from "../interfaces/google";
 
@@ -14,6 +18,39 @@ const GOOGLE_CLIENT_ID =
 
 export const Login: React.FC = () => {
   const { mutate: login } = useLogin<CredentialResponse>();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(event.target.value);
+  };
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
+  const handleLoginWithUsernamePassword = async () => {
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        login(data);
+      } else {
+        console.error('Authentication failed');
+        // Handle authentication error here
+      }
+    } catch (error) {
+      console.error(error);
+      // Handle other errors here
+    }
+  };
 
   const GoogleButton = (): JSX.Element => {
     const divRef = useRef<HTMLDivElement>(null);
@@ -61,7 +98,26 @@ export const Login: React.FC = () => {
         justifyContent="center"
         flexDirection="column"
       >
-
+        <TextField
+          label="Username"
+          variant="outlined"
+          value={username}
+          onChange={handleUsernameChange}
+        />
+        <TextField
+          label="Password"
+          variant="outlined"
+          type="password"
+          value={password}
+          onChange={handlePasswordChange}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleLoginWithUsernamePassword}
+        >
+          Login with Username and Password
+        </Button>
 
         <GoogleButton />
 
@@ -74,7 +130,12 @@ export const Login: React.FC = () => {
           />
           Google
         </Typography>
-      </Box>
+       <Link to="/registration">
+      <Button variant="contained" color="primary">
+        Register
+      </Button>
+    </Link>
+    </Box>
     </Container>
   );
 };
