@@ -3,29 +3,41 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Registration: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setName(event.target.value);
   };
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
   };
 
   const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLogin(event.target.value);
   };
 
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(event.target.value);
+  };
+
   const handleRegistration = async () => {
-    // Implement registration logic here
-    console.log('Username:', username);
-    console.log('Login:', login);
-    console.log('Password:', password);
+    try {
+      const userData = { name, email, login, password };
+      const response = await axios.post('http://localhost:8080/user/register', userData);
+      console.log('Registration successful', response.data);
+      navigate('/login');
+    } catch (error) {
+      console.error('Registration failed', error);
+    }
   };
 
   return (
@@ -38,8 +50,16 @@ const Registration: React.FC = () => {
               variant="outlined"
               fullWidth
               margin="normal"
-              value={username}
-              onChange={handleUsernameChange}
+              value={name}
+              onChange={handleNameChange}
+            />
+            <TextField
+              label="Email"  
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              value={email} 
+              onChange={handleEmailChange}
             />
             <TextField
               label="Login"
@@ -70,7 +90,6 @@ const Registration: React.FC = () => {
         </Paper>
       </Grid>
     </Grid>
-  );
+  );  
 };
-
 export default Registration;

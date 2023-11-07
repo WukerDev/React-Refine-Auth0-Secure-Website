@@ -1,28 +1,29 @@
 import { useLogin } from "@refinedev/core";
-import { useEffect, useRef, useState } from "react";
-
+import { useEffect, useState, useRef} from "react";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { ThemedTitleV2 } from "@refinedev/mui";
-import Registration from "./Registration";
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
+import Home from "./home";
 
 import { CredentialResponse } from "../interfaces/google";
 
-// Todo: Update your Google Client ID here
+
 const GOOGLE_CLIENT_ID =
-  "1041339102270-e1fpe2b6v6u1didfndh7jkjmpcashs4f.apps.googleusercontent.com";
+"1041339102270-e1fpe2b6v6u1didfndh7jkjmpcashs4f.apps.googleusercontent.com";
 
 export const Login: React.FC = () => {
   const { mutate: login } = useLogin<CredentialResponse>();
-  const [username, setUsername] = useState("");
+  const [loogin, setLogin] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+  const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLogin(event.target.value);
   };
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,24 +32,25 @@ export const Login: React.FC = () => {
 
   const handleLoginWithUsernamePassword = async () => {
     try {
-      const response = await fetch('/api/login', {
+      const response = await fetch('http://localhost:8080/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ login:loogin, password }),
       });
-  
+
       if (response.ok) {
         const data = await response.json();
         login(data);
+        setError('');
+        navigate('/home');
       } else {
-        console.error('Authentication failed');
-        // Handle authentication error here
+        setError('Authentication failed');
       }
     } catch (error) {
+      setError('An error occurred');
       console.error(error);
-      // Handle other errors here
     }
   };
 
@@ -99,10 +101,10 @@ export const Login: React.FC = () => {
         flexDirection="column"
       >
         <TextField
-          label="Username"
+          label="Login" // Changed label to "Login"
           variant="outlined"
-          value={username}
-          onChange={handleUsernameChange}
+          value={loogin}
+          onChange={handleLoginChange}
         />
         <TextField
           label="Password"
@@ -121,21 +123,12 @@ export const Login: React.FC = () => {
 
         <GoogleButton />
 
-        <Typography align="center" color={"text.secondary"} fontSize="12px">
-          Powered by
-          <img
-            style={{ padding: "0 5px" }}
-            alt="Google"
-            src="https://refine.ams3.cdn.digitaloceanspaces.com/superplate-auth-icons%2Fgoogle.svg"
-          />
-          Google
-        </Typography>
-       <Link to="/registration">
-      <Button variant="contained" color="primary">
-        Register
-      </Button>
-    </Link>
-    </Box>
+        <Link to="/registration">
+          <Button variant="contained" color="primary">
+            Register
+          </Button>
+        </Link>
+      </Box>
     </Container>
   );
 };

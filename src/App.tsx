@@ -41,6 +41,7 @@ import {
 
 import { Login } from "./pages/login";
 import Registration from "./pages/Registration";
+import Home from "./pages/home";
 import { parseJwt } from "./utils/parse-jwt";
 
 const axiosInstance = axios.create();
@@ -217,6 +218,7 @@ function App() {
                 >
                   <Route path="/login" element={<Login />} />
                   <Route path="/registration" element={<Registration />} />
+                  <Route path="/home" element={<Home/>} />
                 </Route>
               </Routes>
 
