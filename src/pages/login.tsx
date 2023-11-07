@@ -1,134 +1,136 @@
-import { useLogin } from "@refinedev/core";
-import { useEffect, useState, useRef} from "react";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid,Paper, Avatar, TextField, Button, Typography, Snackbar } from '@material-ui/core';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Alert from '@material-ui/lab/Alert';
 import { useNavigate } from "react-router-dom";
-import Home from "./home";
+import axios from 'axios';
 
-import { CredentialResponse } from "../interfaces/google";
-
-
-const GOOGLE_CLIENT_ID =
-"1041339102270-e1fpe2b6v6u1didfndh7jkjmpcashs4f.apps.googleusercontent.com";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundImage: 'linear-gradient(to right top, #65dfc9, #6cdbeb)',
+  },
+  paperStyle: {
+    padding: theme.spacing(4),
+    width: 300,
+    margin: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatarStyle: {
+    backgroundColor: theme.palette.secondary.main,
+    marginBottom: theme.spacing(1),
+  },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
 export const Login: React.FC = () => {
-  const { mutate: login } = useLogin<CredentialResponse>();
-  const [loogin, setLogin] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const classes = useStyles();
   const navigate = useNavigate();
 
-  const handleLoginChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLogin(event.target.value);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
   };
 
-  const handleLoginWithUsernamePassword = async () => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8080/user/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ login:loogin, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        login(data);
-        setError('');
+      const response = await axios.post('http://localhost:8080/user/login', { email, password });
+      if (response.status === 200) {
         navigate('/home');
       } else {
         setError('Authentication failed');
       }
     } catch (error) {
-      setError('An error occurred');
-      console.error(error);
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data.message || 'An error occurred during login');
+      } else {
+        setError('An unexpected error occurred');
+      }
     }
   };
 
-  const GoogleButton = (): JSX.Element => {
-    const divRef = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-      if (typeof window === "undefined" || !window.google || !divRef.current) {
-        return;
-      }
-
-      try {
-        window.google.accounts.id.initialize({
-          ux_mode: "popup",
-          client_id: GOOGLE_CLIENT_ID,
-          callback: async (res: CredentialResponse) => {
-            if (res.credential) {
-              login(res);
-            }
-          },
-        });
-        window.google.accounts.id.renderButton(divRef.current, {
-          theme: "filled_blue",
-          size: "medium",
-          type: "standard",
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }, []);
-
-    return <div ref={divRef} />;
-  };
-
   return (
-    <Container
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Box
-        display="flex"
-        gap="36px"
-        justifyContent="center"
-        flexDirection="column"
-      >
-        <TextField
-          label="Login" // Changed label to "Login"
-          variant="outlined"
-          value={loogin}
-          onChange={handleLoginChange}
-        />
-        <TextField
-          label="Password"
-          variant="outlined"
-          type="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleLoginWithUsernamePassword}
-        >
-          Login with Username and Password
-        </Button>
-
-        <GoogleButton />
-
-        <Link to="/registration">
-          <Button variant="contained" color="primary">
-            Register
+    <div className={classes.root}>
+      <Paper className={classes.paperStyle}>
+        <Avatar className={classes.avatarStyle}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Login
+        </Typography>
+        <form className={classes.form} noValidate onSubmit={handleLogin}>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+            value={email}
+            onChange={handleEmailChange}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          <Grid container>
+            <Grid item xs>
+              <Typography variant="body2" color="textSecondary" align="center">
+              Don't have an account ? <a href="/registration">Register</a>
+              </Typography>
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Login
           </Button>
-        </Link>
-      </Box>
-    </Container>
+        </form>
+      </Paper>
+      <Snackbar open={error !== ''} autoHideDuration={6000}>
+        <Alert severity="error" onClose={() => setError('')}>
+          {error}
+        </Alert>
+      </Snackbar>
+    </div>
   );
 };
+
+export default Login;
