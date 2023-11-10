@@ -10,32 +10,36 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
     display: 'flex',
-    
     alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
+    padding: theme.spacing(2), // responsive padding
   },
   paperStyle: {
     padding: theme.spacing(4),
-    margin: "20px auto",
+    margin: theme.spacing(2, 'auto'),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-
+    boxShadow: theme.shadows[4], // for elevation
   },
   avatarStyle: {
+    
+    
     backgroundColor: theme.palette.primary.main,
     marginBottom: theme.spacing(1),
   },
   btnStyle: {
-    margin: '8px 0',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   form: {
-    width: '100%',
+    width: '100%', // might want to make this responsive
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
   },
 }));
 
@@ -117,14 +121,7 @@ export const Login: React.FC = () => {
               >
                 Sign In
               </Button>
-                        <Grid container>
-                                    <Grid container>
-            <Grid item xs>
-              <Typography variant="body2" color="textSecondary" align="center">
-              You forgot your password ? <a href="/registration">Reset Password</a>
-              </Typography>
-            </Grid>
-          </Grid>
+              <Grid container>
             <Grid item xs>
               <Typography variant="body2" color="textSecondary" align="center">
               Do not have an account ? <a href="/registration">Sign Up</a>
