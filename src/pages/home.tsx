@@ -4,6 +4,8 @@ import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as Chevr
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import DashboardComponent from '../pages/dashboard/DashboardComponent';
+import Option1Component from '../pages/dashboard/Option1Component';
 
 const drawerWidth = 240;
 
@@ -55,6 +57,7 @@ const Home: React.FC = () => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState('dashboard');
   const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
@@ -63,6 +66,10 @@ const Home: React.FC = () => {
 
   const handleLogout = () => {
     navigate('/login');
+  };
+
+  const handleItemClick = (item: string) => {
+    setSelectedItem(item);
   };
 
   return (
@@ -104,14 +111,11 @@ const Home: React.FC = () => {
         </div>
         <Divider />
         <List>
-          {/* Dashboard */}
-          <ListItem button onClick={() => navigate('/dashboard')}>
+          <ListItem button onClick={() => handleItemClick('dashboard')}>
             <ListItemIcon><DashboardIcon /></ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItem>
-          {/* Other items */}
-          <ListItem button onClick={() => navigate('/option1')}>
-            {/* Icon for Option 1 */}
+          <ListItem button onClick={() => handleItemClick('option1')}>
             <ListItemText primary="Option 1" />
           </ListItem>
           <ListItem button onClick={handleLogout}>
@@ -123,6 +127,8 @@ const Home: React.FC = () => {
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {/* Main content here */}
+        {selectedItem === 'dashboard' && <DashboardComponent />}
+        {selectedItem === 'option1' && <Option1Component />}
       </main>
     </div>
   );
