@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid,Paper, Avatar, TextField, Button, Typography, Snackbar } from '@material-ui/core';
+import { Grid, Paper, Avatar, TextField, Button, Typography, Snackbar } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Alert from '@material-ui/lab/Alert';
 import { useNavigate } from "react-router-dom";
@@ -10,22 +10,25 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
     display: 'flex',
+    
+    alignItems: 'center',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-    backgroundImage: 'linear-gradient(to right top, #65dfc9, #6cdbeb)',
   },
   paperStyle: {
     padding: theme.spacing(4),
-    width: 300,
-    margin: 'auto',
+    margin: "20px auto",
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+
   },
   avatarStyle: {
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.primary.main,
     marginBottom: theme.spacing(1),
+  },
+  btnStyle: {
+    margin: '8px 0',
   },
   form: {
     width: '100%',
@@ -71,6 +74,7 @@ export const Login: React.FC = () => {
   };
 
   return (
+
     <div className={classes.root}>
       <Paper className={classes.paperStyle}>
         <Avatar className={classes.avatarStyle}>
@@ -78,59 +82,68 @@ export const Login: React.FC = () => {
         </Avatar>
         <Typography component="h1" variant="h5">
           Login
-        </Typography>
-        <form className={classes.form} noValidate onSubmit={handleLogin}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={email}
-            onChange={handleEmailChange}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={password}
-            onChange={handlePasswordChange}
-          />
-          <Grid container>
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={handleLogin}>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                onChange={handleEmailChange}
+              />
+              <TextField
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={handlePasswordChange}
+              />
+                            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.btnStyle}
+              >
+                Sign In
+              </Button>
+                        <Grid container>
+                                    <Grid container>
             <Grid item xs>
               <Typography variant="body2" color="textSecondary" align="center">
-              Don't have an account ? <a href="/registration">Register</a>
+              You forgot your password ? <a href="/registration">Reset Password</a>
               </Typography>
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Login
-          </Button>
-        </form>
-      </Paper>
-      <Snackbar open={error !== ''} autoHideDuration={6000}>
+            <Grid item xs>
+              <Typography variant="body2" color="textSecondary" align="center">
+              Do not have an account ? <a href="/registration">Sign Up</a>
+              </Typography>
+            </Grid>
+          </Grid>
+
+
+            </form>
+
+        </Paper>
+        <Snackbar open={error !== ''} autoHideDuration={6000}>
         <Alert severity="error" onClose={() => setError('')}>
           {error}
         </Alert>
       </Snackbar>
-    </div>
-  );
+
+      </div>
+    );
 };
 
 export default Login;
