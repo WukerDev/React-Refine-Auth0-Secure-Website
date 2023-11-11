@@ -1,0 +1,163 @@
+{
+  "pages": {
+      "login": {
+          "title": "Zaloguj się na swoje konto",
+          "signin": "Zaloguj się",
+          "signup": "Zarejestruj się",
+          "divider": "lub",
+          "fields": {
+              "email": "Email",
+              "password": "Hasło"
+          },
+          "errors": {
+              "validEmail": "Nieprawidłowy adres email"
+          },
+          "buttons": {
+              "submit": "Zaloguj",
+              "forgotPassword": "Zapomniałeś hasła?",
+              "noAccount": "Nie masz konta?",
+              "rememberMe": "Zapamiętaj mnie"
+          }
+      },
+      "forgotPassword": {
+          "title": "Zapomniałeś hasła?",
+          "fields": {
+              "email": "Email"
+          },
+          "errors": {
+              "validEmail": "Nieprawidłowy adres email"
+          },
+          "buttons": {
+              "submit": "Wyślij instrukcje resetowania"
+          }
+      },
+      "register": {
+          "title": "Zarejestruj się na swoje konto",
+          "fields": {
+              "email": "Email",
+              "password": "Hasło"
+          },
+          "errors": {
+              "validEmail": "Nieprawidłowy adres email"
+          },
+          "buttons": {
+              "submit": "Zarejestruj",
+              "haveAccount": "Masz już konto?"
+          }
+      },
+      "updatePassword": {
+          "title": "Zaktualizuj hasło",
+          "fields": {
+              "password": "Nowe hasło",
+              "confirmPassword": "Potwierdź nowe hasło"
+          },
+          "errors": {
+              "confirmPasswordNotMatch": "Hasła nie pasują do siebie"
+          },
+          "buttons": {
+              "submit": "Aktualizuj"
+          }
+      },
+      "error": {
+          "info": "Być może zapomniałeś dodać komponentu {{action}} do zasobu {{resource}}.",
+          "404": "Przepraszamy, odwiedzona strona nie istnieje.",
+          "resource404": "Czy na pewno utworzyłeś zasób {{resource}}.",
+          "backHome": "Powrót do home"
+      }
+  },
+  "actions": {
+      "list": "Lista",
+      "create": "Utwórz",
+      "edit": "Edytuj",
+      "show": "Pokaż"
+  },
+  "buttons": {
+      "create": "Utwórz",
+      "save": "Zapisz",
+      "logout": "Wylogowanie",
+      "delete": "Usuń",
+      "edit": "Edytuj",
+      "cancel": "Anuluj",
+      "confirm": "Jesteś pewien?",
+      "filter": "Filtr",
+      "clear": "Wyczyść",
+      "refresh": "Odświeżanie",
+      "show": "Pokaż",
+      "undo": "Cofnij",
+      "import": "Import",
+      "clone": "Klon",
+      "notAccessTitle": "Nie masz uprawnień dostępu"
+  },
+  "warnWhenUnsavedChanges": "Czy na pewno chcesz wyjść? Masz niezapisane zmiany.",
+  "notifications": {
+      "success": "Udany",
+      "error": "Błąd (kod statusu: {{statusCode}})",
+      "undoable": "Na cofnięcie masz {{sekundy}} sekund",
+      "createSuccess": "Pomyślnie utworzono {{zasób}}",
+      "createError": "Wystąpił błąd podczas tworzenia {{resource}} (kod statusu: {{statusCode}})",
+      "deleteSuccess": "Pomyślnie usunięto {{zasób}}.",
+      "deleteError": "Błąd podczas usuwania {{resource}} (kod statusu: {{statusCode}})",
+      "editSuccess": "Pomyślnie edytowano {{resource}}",
+      "editError": "Błąd podczas edycji {{resource}} (kod statusu: {{statusCode}})",
+      "importProgress": "Importowanie: {{processed}}/{{total}}"
+  },
+  "loading": "Ładowanie",
+  "tags": {
+      "clone": "Klon"
+  },
+  "dashboard": {
+      "title": "Dashboard"
+  },
+  "blog_posts": {
+      "blog_posts": "Posty na blogu",
+      "fields": {
+          "id": "Id",
+          "title": "Tytuł",
+          "content": "Treść",
+          "status": "Status",
+          "createdAt": "Utworzono w",
+          "category": "Kategoria"
+      },
+      "titles": {
+          "create": "Utwórz wpis na blogu",
+          "edit": "Edytuj wpis na blogut",
+          "list": "Posty na blogu",
+          "show": "Pokaż wpis na blogu"
+      }
+  },
+  "categories": {
+      "categories": "Kategorie",
+      "fields": {
+          "id": "Id",
+          "title": "Tytuł",
+          "createdAt": "Utworzono w"
+      },
+      "titles": {
+          "create": "Utwórz kategorię",
+          "edit": "Edytuj kategorię",
+          "list": "Kategorie",
+          "show": "Pokaż kategorię"
+      }
+  },
+  "documentTitle": {
+      "default": "refine",
+      "suffix": " | refine",
+      "blog_posts": {
+          "list": "Posty na blogu | refine",
+          "show": "#{{id}} Pokaż wpis na blogu | refine",
+          "edit": "#{{id}} Edytuj wpis na blogu | refine",
+          "create": "Utwórz nowy wpis na blogu | refine",
+          "clone": "#{{id}} Klonowanie wpisów na blogu | refine"
+      },
+      "categories": {
+          "list": "Kategorie | refine",
+          "show": "#{{id}} Pokaż kategorię | refine",
+          "edit": "#{{id}} Edytuj kategorię | refine",
+          "create": "Utwórz nową kategorię | refine",
+          "clone": "#{{id}} Kategoria klonów | refine"
+      }
+  },
+  "table": {
+      "actions": "Akcje"
+  }
+}
