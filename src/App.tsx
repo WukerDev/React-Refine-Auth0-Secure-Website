@@ -30,20 +30,8 @@ import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
-import {
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostList,
-  BlogPostShow,
-} from "./pages/blog-posts";
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from "./pages/categories";
 import { Login } from "./pages/login";
-
+import { DashboardPage } from "./pages/dashboards";
 function App() {
   const { isLoading, user, logout, getIdTokenClaims } = useAuth0();
   const { t, i18n } = useTranslation();
@@ -130,15 +118,9 @@ function App() {
                 authProvider={authProvider}
                 i18nProvider={i18nProvider}
                 routerProvider={routerBindings}
-                resources={[{
-                  name: "test",
-                  show: "/test/show/:id"
-                }, {
+                resources={[ {
                   name: "dashboard",
                   list: "/dashboard",
-                  create: "/dashboard/create",
-                  edit: "/dashboard/edit/:id",
-                  show: "/dashboard/show/:id"
                 }]}
                 options={{
                   syncWithLocation: true,
@@ -172,17 +154,8 @@ function App() {
                       index
                       element={<NavigateToResource resource="blog_posts" />}
                     />
-                    <Route path="/blog-posts">
-                      <Route index element={<BlogPostList />} />
-                      <Route path="create" element={<BlogPostCreate />} />
-                      <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />
-                    </Route>
-                    <Route path="/categories">
-                      <Route index element={<CategoryList />} />
-                      <Route path="create" element={<CategoryCreate />} />
-                      <Route path="edit/:id" element={<CategoryEdit />} />
-                      <Route path="show/:id" element={<CategoryShow />} />
+                    <Route path="/dashboard">
+                      <Route index element={<DashboardPage />} />
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
