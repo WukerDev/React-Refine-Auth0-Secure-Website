@@ -1,4 +1,4 @@
-# client
+# refine-project
 
 <div align="center" style="margin: 30px;">
     <a href="https://refine.dev">
@@ -42,11 +42,10 @@ To learn more about **refine**, please check out the [Documentation](https://ref
 - **REST Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
 - **Material UI** [Docs](https://refine.dev/docs/ui-frameworks/mui/tutorial/)
 - **Inferencer** [Docs](https://refine.dev/docs/packages/documentation/inferencer)
+- **Auth0 Auth Providder** [Docs](https://refine.dev/docs/guides-and-concepts/auth/auth0/)
+- **i18n** [Docs](https://refine.dev/docs/core/providers/i18n-provider/)
 - **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
-- **Google Auth Provider** [Docs](https://refine.dev/docs/core/providers/auth-provider/)
 
 ## License
 
 MIT
-
-ALLALALALALALALALALAAl

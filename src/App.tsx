@@ -4,14 +4,18 @@ import {
   GitHubBanner,
   Refine,
 } from "@refinedev/core";
+import { DevtoolsPanel, DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+
 import {
   ErrorComponent,
   notificationProvider,
   RefineSnackbarProvider,
   ThemedLayoutV2,
+  ThemedTitleV2,
 } from "@refinedev/mui";
 
+import { useAuth0 } from "@auth0/auth0-react";
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import routerBindings, {
@@ -21,11 +25,12 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import dataProvider from "@refinedev/simple-rest";
-import axios, { AxiosRequestConfig } from "axios";
+import axios from "axios";
+import { useTranslation } from "react-i18next";
 import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
-import { CredentialResponse } from "./interfaces/google";
 import {
   BlogPostCreate,
   BlogPostEdit,
@@ -38,67 +43,26 @@ import {
   CategoryList,
   CategoryShow,
 } from "./pages/categories";
-
 import { Login } from "./pages/login";
-import Registration from "./pages/Registration";
-import Home from "./pages/home";
-import { parseJwt } from "./utils/parse-jwt";
-
-const axiosInstance = axios.create();
-axiosInstance.interceptors.request.use((request: AxiosRequestConfig) => {
-  const token = localStorage.getItem("token");
-  if (request.headers) {
-    request.headers["Authorization"] = `Bearer ${token}`;
-  } else {
-    request.headers = {
-      Authorization: `Bearer ${token}`,
-    };
-  }
-
-  return request;
-});
 
 function App() {
+  const { isLoading, user, logout, getIdTokenClaims } = useAuth0();
+  const { t, i18n } = useTranslation();
+
+  if (isLoading) {
+    return <span>loading...</span>;
+  }
+
   const authProvider: AuthBindings = {
-    login: async ({ credential }: CredentialResponse) => {
-      const profileObj = credential ? parseJwt(credential) : null;
-
-      if (profileObj) {
-        localStorage.setItem(
-          "user",
-          JSON.stringify({
-            ...profileObj,
-            avatar: profileObj.picture,
-          })
-        );
-
-        localStorage.setItem("token", `${credential}`);
-
-        return {
-          success: true,
-          redirectTo: "/",
-        };
-      }
-
+    login: async () => {
       return {
-        success: false,
+        success: true,
       };
     },
     logout: async () => {
-      const token = localStorage.getItem("token");
-
-      if (token && typeof window !== "undefined") {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        axios.defaults.headers.common = {};
-        window.google?.accounts.id.revoke(token, () => {
-          return {};
-        });
-      }
-
+      logout({ returnTo: window.location.origin });
       return {
         success: true,
-        redirectTo: "/login",
       };
     },
     onError: async (error) => {
@@ -106,33 +70,51 @@ function App() {
       return { error };
     },
     check: async () => {
-      const token = localStorage.getItem("token");
-
-      if (token) {
+      try {
+        const token = await getIdTokenClaims();
+        if (token) {
+          axios.defaults.headers.common = {
+            Authorization: `Bearer ${token.__raw}`,
+          };
+          return {
+            authenticated: true,
+          };
+        } else {
+          return {
+            authenticated: false,
+            error: {
+              message: "Check failed",
+              name: "Token not found",
+            },
+            redirectTo: "/login",
+            logout: true,
+          };
+        }
+      } catch (error: any) {
         return {
-          authenticated: true,
+          authenticated: false,
+          error: new Error(error),
+          redirectTo: "/login",
+          logout: true,
         };
       }
-
-      return {
-        authenticated: false,
-        error: {
-          message: "Check failed",
-          name: "Token not found",
-        },
-        logout: true,
-        redirectTo: "/login",
-      };
     },
     getPermissions: async () => null,
     getIdentity: async () => {
-      const user = localStorage.getItem("user");
       if (user) {
-        return JSON.parse(user);
+        return {
+          ...user,
+          avatar: user.picture,
+        };
       }
-
       return null;
     },
+  };
+
+  const i18nProvider = {
+    translate: (key: string, params: object) => t(key, params),
+    changeLocale: (lang: string) => i18n.changeLanguage(lang),
+    getLocale: () => i18n.language,
   };
 
   return (
@@ -142,53 +124,64 @@ function App() {
           <CssBaseline />
           <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
           <RefineSnackbarProvider>
-            <Refine
-              dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
-              notificationProvider={notificationProvider}
-              routerProvider={routerBindings}
-              authProvider={authProvider}
-              resources={[
-                {
-                  name: "blog_posts",
-                  list: "/blog-posts",
-                  create: "/blog-posts/create",
-                  edit: "/blog-posts/edit/:id",
-                  show: "/blog-posts/show/:id",
-                  meta: {
-                    canDelete: true,
+            <DevtoolsProvider>
+              <Refine
+                dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
+                notificationProvider={notificationProvider}
+                authProvider={authProvider}
+                i18nProvider={i18nProvider}
+                routerProvider={routerBindings}
+                resources={[
+                  {
+                    name: "blog_posts",
+                    list: "/blog-posts",
+                    create: "/blog-posts/create",
+                    edit: "/blog-posts/edit/:id",
+                    show: "/blog-posts/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
                   },
-                },
-                {
-                  name: "categories",
-                  list: "/categories",
-                  create: "/categories/create",
-                  edit: "/categories/edit/:id",
-                  show: "/categories/show/:id",
-                  meta: {
-                    canDelete: true,
+                  {
+                    name: "categories",
+                    list: "/categories",
+                    create: "/categories/create",
+                    edit: "/categories/edit/:id",
+                    show: "/categories/show/:id",
+                    meta: {
+                      canDelete: true,
+                    },
                   },
-                },
-              ]}
-              options={{
-                syncWithLocation: true,
-                warnWhenUnsavedChanges: true,
-                projectId: "1DKTwa-gVQdkE-2KiQU1",
-              }}
-            >
-              <Routes>
-                <Route
-                  element={
-                    <Authenticated
-                      key="authenticated-inner"
-                      fallback={<CatchAllNavigate to="/login" />}
-                    >
-                      <ThemedLayoutV2 Header={() => <Header sticky />} >
-                        <Outlet />
-                      </ThemedLayoutV2>
-                    </Authenticated>
-                  }
-                >
+                ]}
+                options={{
+                  syncWithLocation: true,
+                  warnWhenUnsavedChanges: true,
+                  projectId: "M7gQpU-aUKJEe-PmZy7Y",
+                }}
+              >
+                <Routes>
                   <Route
+                    element={
+                      <Authenticated
+                        key="authenticated-inner"
+                        fallback={<CatchAllNavigate to="/login" />}
+                      >
+                        <ThemedLayoutV2
+                          Header={() => <Header sticky />}
+                          Title={({ collapsed }) => (
+                            <ThemedTitleV2
+                              collapsed={collapsed}
+                              text="Projekt Systemu"
+                              icon={<AppIcon />}
+                            />
+                          )}
+                        >
+                          <Outlet />
+                        </ThemedLayoutV2>
+                      </Authenticated>
+                    }
+                  >
+                    <Route
                       index
                       element={<NavigateToResource resource="blog_posts" />}
                     />
@@ -206,29 +199,28 @@ function App() {
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
-                <Route
-                  element={
-                    <Authenticated
-                      key="authenticated-outer"
-                      fallback={<Outlet />}
-                    >
-                      <NavigateToResource />
-                    </Authenticated>
-                  }
-                >
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/registration" element={<Registration />} />
-                  <Route path="/home" element={<Home/>} />
-                </Route>
-              </Routes>
+                  <Route
+                    element={
+                      <Authenticated
+                        key="authenticated-outer"
+                        fallback={<Outlet />}
+                      >
+                        <NavigateToResource />
+                      </Authenticated>
+                    }
+                  >
+                    <Route path="/login" element={<Login />} />
+                  </Route>
+                </Routes>
 
-              <RefineKbar />
-              <UnsavedChangesNotifier />
-              <DocumentTitleHandler />
-            </Refine>
+                <RefineKbar />
+                <UnsavedChangesNotifier />
+                <DocumentTitleHandler />
+              </Refine>
+            </DevtoolsProvider>
           </RefineSnackbarProvider>
         </ColorModeContextProvider>
-      </RefineKbarProvider> 
+      </RefineKbarProvider>
     </BrowserRouter>
   );
 }
