@@ -13,7 +13,7 @@ import {
   ThemedLayoutV2,
   ThemedTitleV2,
 } from "@refinedev/mui";
-
+import HomeIcon from '@mui/icons-material/Home';
 import { useAuth0 } from "@auth0/auth0-react";
 import CssBaseline from "@mui/material/CssBaseline";
 import GlobalStyles from "@mui/material/GlobalStyles";
@@ -26,7 +26,7 @@ import routerBindings, {
 import dataProvider from "@refinedev/simple-rest";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes, Navigate } from "react-router-dom";
 import { AppIcon } from "./components/app-icon";
 import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
@@ -121,6 +121,10 @@ function App() {
                 resources={[ {
                   name: "dashboard",
                   list: "/dashboard",
+                  meta: {
+                    label: "Dashboard",
+                    icon: <HomeIcon />,
+                  },
                 }]}
                 options={{
                   syncWithLocation: true,
@@ -151,12 +155,9 @@ function App() {
                     }
                   >
                     <Route
-                      index
-                      element={<NavigateToResource resource="blog_posts" />}
+                      index element={<NavigateToResource resource="dashboard" />}
                     />
-                    <Route path="/dashboard">
-                      <Route index element={<DashboardPage />} />
-                    </Route>
+                    <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                   <Route
