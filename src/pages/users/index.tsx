@@ -42,8 +42,17 @@ interface User {
     let direction = 'ascending';
     if (sortConfig.key === key && sortConfig.direction === 'ascending') {
       direction = 'descending';
+    } else if (sortConfig.key === key && sortConfig.direction === 'descending') {
+      direction = 'none';
     }
     setSortConfig({ key, direction });
+  };
+
+  const getSortDirectionIndicator = (key: string) => {
+    if (sortConfig.key === key) {
+      return sortConfig.direction === 'ascending' ? ' ↑' : sortConfig.direction === 'descending' ? ' ↓' : '';
+    }
+    return '';
   };
 
   useEffect(() => {
@@ -78,41 +87,42 @@ interface User {
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-    <Typography variant="h4" gutterBottom>
-      Użytkownicy
-    </Typography>
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Awatar</TableCell>
-            <TableCell>
-              <Button onClick={() => requestSort('name')}>Dane</Button>
-            </TableCell>
-            <TableCell>
-              <Button onClick={() => requestSort('nickname')}>Login</Button>
-            </TableCell>
-            <TableCell>
-              <Button onClick={() => requestSort('email')}>Email</Button>
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {sortedUsers.map((user) => (
-            <TableRow key={user.user_id}>
-              <TableCell component="th" scope="row">
-                <Avatar alt={user.name} src={user.picture} sx={{ width: 56, height: 56 }} />
-              </TableCell>
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.nickname}</TableCell>
-              <TableCell>{user.email}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </Box>
+
+        <Box sx={{ flexGrow: 1 }}>
+          <Typography variant="h4" gutterBottom>
+            Użytkownicy
+          </Typography>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Awatar</TableCell>
+                  <TableCell>
+                    <Button onClick={() => requestSort('name')}>Dane{getSortDirectionIndicator('name')}</Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button onClick={() => requestSort('nickname')}>Login{getSortDirectionIndicator('nickname')}</Button>
+                  </TableCell>
+                  <TableCell>
+                    <Button onClick={() => requestSort('email')}>Email{getSortDirectionIndicator('email')}</Button>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {sortedUsers.map((user) => (
+                  <TableRow key={user.user_id}>
+                    <TableCell component="th" scope="row">
+                      <Avatar alt={user.name} src={user.picture} sx={{ width: 56, height: 56 }} />
+                    </TableCell>
+                    <TableCell>{user.name}</TableCell>
+                    <TableCell>{user.nickname}</TableCell>
+                    <TableCell>{user.email}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
   );
 };
 
