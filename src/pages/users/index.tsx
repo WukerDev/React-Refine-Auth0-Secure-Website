@@ -119,9 +119,9 @@ interface User {
               <TableCell>{user.nickname}</TableCell>
               <TableCell>{user.email}</TableCell>
               <TableCell>
-                <Button sx={{ background: 'blue', color: 'white', borderRadius: 4, '&:hover': { background: 'black' }, mr: 1 }}>EDYTUJ</Button>
+                <Button sx={{ background: 'blue', color: 'white', borderRadius: 4, '&:hover': { background: 'black' }, }}>EDYTUJ</Button>
                 <Button sx={{ background: 'red', color: 'white', borderRadius: 4, '&:hover': { background: 'black' }, mx: 1 }}>USUŃ</Button>
-                <Button sx={{ background: 'darkred', color: 'white', borderRadius: 4, '&:hover': { background: 'black', ml: 1 } }}>ZABLOKUJ</Button>
+                <Button sx={{ background: 'darkred', color: 'white', borderRadius: 4, '&:hover': { background: 'black', } }}>ZABLOKUJ</Button>
               </TableCell>
             </TableRow>
           ))}
