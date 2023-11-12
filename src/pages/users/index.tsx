@@ -17,6 +17,8 @@ interface User {
   name: string;
   picture: string;
   nickname: string;
+  picture: string;
+  nickname: string;
   // Add other user fields as per your API response
 }
 
