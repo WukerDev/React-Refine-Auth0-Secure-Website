@@ -4,9 +4,10 @@ import { Typography, Grid, Card, CardContent, Box } from "@mui/material";
 import { useGetIdentity, useGetLocale, useSetLocale } from "@refinedev/core";
 import { Doughnut } from 'react-chartjs-2';
 import 'chart.js/auto';
-import { ColorModeContext } from "../../contexts/color-mode";
 
+import { ColorModeContext } from "../../contexts/color-mode";
 import { LatestActivities } from './components/latestactivities';
+import { ActiveUsers } from './components/activeusers';
 
 type IUser = {
     id: number;
@@ -37,10 +38,9 @@ export const DashboardPage: React.FC<IResourceComponentsProps> = () => {
         ],
     };
 
-    // Options for the doughnut chart
     const chartOptions = {
         maintainAspectRatio: true,
-        aspectRatio: 3, // Increase this value to make the chart smaller
+        aspectRatio: 1.5, 
     };
 
     const { mode } = useContext(ColorModeContext);
@@ -52,19 +52,18 @@ export const DashboardPage: React.FC<IResourceComponentsProps> = () => {
         // Dark mode styles
         fontWeight: 'bold', 
         fontSize: '2.5rem', 
-        color: '#E0E0E0', // Light color for visibility on dark background
+        color: '#E0E0E0', 
         textShadow: '1px 1px 3px black',
-        backgroundColor: 'rgba(50, 50, 50, 0.5)', // Darker background highlight
-        padding: '10px', 
+        backgroundColor: 'rgba(50, 50, 50, 0.5)', 
         borderRadius: '5px', 
         animation: 'fadeIn 2s'
     } : {
         // Light mode styles
         fontWeight: 'bold', 
         fontSize: '2.5rem', 
-        color: '#4a90e2', // Choose a color that fits your theme
+        color: '#4a90e2', 
         textShadow: '1px 1px 2px grey',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)', // Optional: background highlight
+        backgroundColor: 'rgba(255, 255, 255, 0.5)', 
         padding: '10px', 
         borderRadius: '5px', 
         animation: 'fadeIn 2s'
@@ -76,24 +75,28 @@ export const DashboardPage: React.FC<IResourceComponentsProps> = () => {
              <Typography variant="h4" gutterBottom style={textStyle}>
             Welcome back {user?.name}!
         </Typography>
-            <Grid container spacing={2} alignItems="flex-start">
-                {/* Task Status */}
-                <Grid item xs={8} sm={5}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Task Status
-                            </Typography>
-                            <Doughnut data={tasksData} />
-                        </CardContent>
-                    </Card>
-                </Grid>
-
-                {/* Latest Activities */}
-                <Grid item xs={12} sm={7}>
-                    <LatestActivities />
-                </Grid>
+        <Typography variant="h6" gutterBottom>
+      </Typography>
+      <Grid >
+      <ActiveUsers />
+        </Grid>
+        <br />
+        <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+            <Card>
+                <CardContent>
+                <Typography variant="h6" gutterBottom>
+                    Tasks Status
+                </Typography>
+                <Doughnut data={tasksData} options={chartOptions} />
+                </CardContent>
+            </Card>
             </Grid>
-        </Box>
+            <Grid item xs={12} md={6}>
+            <LatestActivities />
+        </Grid>
+        </Grid>
+    </Box>
+
     );
 };
