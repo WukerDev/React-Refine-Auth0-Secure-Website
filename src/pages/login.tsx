@@ -5,7 +5,7 @@ import { useTranslate } from "@refinedev/core";
 import { ThemedTitleV2 } from "@refinedev/mui";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import { AppIcon } from "../components/app-icon";
+import BuildIcon from '@mui/icons-material/Web';
 
 export const Login: React.FC = () => {
   const { loginWithRedirect } = useAuth0();
@@ -34,7 +34,7 @@ export const Login: React.FC = () => {
             justifyContent: "center",
           }}
           text="Projekt Systemu"
-          icon={<AppIcon />}
+          icon={<BuildIcon />}
         />
         <Button
           style={{ width: "240px" }}

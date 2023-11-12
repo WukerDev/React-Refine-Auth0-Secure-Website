@@ -5,7 +5,9 @@ import {
 } from "@refinedev/core";
 import { DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-import BuildIcon from '@mui/icons-material/Build';
+import BuildIcon from '@mui/icons-material/Web';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
   ErrorComponent,
   notificationProvider,
@@ -34,6 +36,8 @@ import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Login } from "./pages/login";
 import { DashboardPage } from "./pages/dashboards";
 import { UsersPage } from "./pages/users";
+import { ProfilePage } from "./pages/profile";
+import { OptionsPage } from "./pages/options";
 function App() {
   const { isLoading, user, logout, getIdTokenClaims } = useAuth0();
   const { t, i18n } = useTranslation();
@@ -135,7 +139,24 @@ function App() {
                     label: "Użytkownicy",
                     icon: <PeopleIcon />,
                   },
-                }, ]}
+                },
+                {
+                  name: "profile",
+                  list: "/profile",
+                  meta: {
+                    label: "Profil",
+                    icon: <ManageAccountsIcon />,
+                  },
+                },
+                {
+                  name: "options",
+                  list: "/options",
+                  meta: {
+                    label: "Opcje",
+                    icon: <SettingsIcon />,
+                  },
+                }
+               ]}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -170,6 +191,8 @@ function App() {
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="*" element={<ErrorComponent />} />
                     <Route path="/users" element={<UsersPage />} />
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/options" element={<OptionsPage />} />
                   </Route>
                   <Route
                     element={

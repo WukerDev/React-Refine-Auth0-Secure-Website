@@ -18,6 +18,7 @@ interface User {
   picture: string;
   nickname: string;
   email: string;
+  last_login: string;
   // Add other user fields as per your API response
 }
 
@@ -89,10 +90,10 @@ interface User {
   return (
 
     <Box sx={{ flexGrow: 1 }}>
-    <Typography variant="h4" gutterBottom>
+    <TableContainer component={Paper}>
+    <Typography sx={{m: 2}} variant="h4" gutterBottom>
       Użytkownicy
     </Typography>
-    <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -106,6 +107,7 @@ interface User {
             <TableCell>
               <Button onClick={() => requestSort('email')}>Email{getSortDirectionIndicator('email')}</Button>
             </TableCell>
+            <TableCell>OSTATNIE LOGOWANIE</TableCell>
             <TableCell>OPCJE</TableCell>
           </TableRow>
         </TableHead>
@@ -118,8 +120,9 @@ interface User {
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.nickname}</TableCell>
               <TableCell>{user.email}</TableCell>
+              <TableCell>{user.last_login}</TableCell>
               <TableCell>
-                <Button sx={{ background: 'blue', color: 'white', borderRadius: 4, '&:hover': { background: 'black' }, }}>EDYTUJ</Button>
+                <Button sx={{ background: 'blue', color: 'white', borderRadius: 4, '&:hover': { background: 'black' } }}>EDYTUJ</Button>
                 <Button sx={{ background: 'red', color: 'white', borderRadius: 4, '&:hover': { background: 'black' }, mx: 1 }}>USUŃ</Button>
                 <Button sx={{ background: 'darkred', color: 'white', borderRadius: 4, '&:hover': { background: 'black', } }}>ZABLOKUJ</Button>
               </TableCell>
