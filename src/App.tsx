@@ -5,7 +5,7 @@ import {
 } from "@refinedev/core";
 import { DevtoolsProvider } from "@refinedev/devtools";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
-
+import BuildIcon from '@mui/icons-material/Build';
 import {
   ErrorComponent,
   notificationProvider,
@@ -13,6 +13,7 @@ import {
   ThemedLayoutV2,
   ThemedTitleV2,
 } from "@refinedev/mui";
+import PeopleIcon from '@mui/icons-material/People';
 import HomeIcon from '@mui/icons-material/Home';
 import { useAuth0 } from "@auth0/auth0-react";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -32,6 +33,7 @@ import { Header } from "./components/header";
 import { ColorModeContextProvider } from "./contexts/color-mode";
 import { Login } from "./pages/login";
 import { DashboardPage } from "./pages/dashboards";
+import { UsersPage } from "./pages/users";
 function App() {
   const { isLoading, user, logout, getIdTokenClaims } = useAuth0();
   const { t, i18n } = useTranslation();
@@ -112,20 +114,28 @@ function App() {
           <GlobalStyles styles={{ html: { WebkitFontSmoothing: "auto" } }} />
           <RefineSnackbarProvider>
             <DevtoolsProvider>
+              
               <Refine
                 dataProvider={dataProvider("https://api.fake-rest.refine.dev")}
                 notificationProvider={notificationProvider}
                 authProvider={authProvider}
                 i18nProvider={i18nProvider}
                 routerProvider={routerBindings}
-                resources={[ {
+                resources={[{
                   name: "dashboard",
                   list: "/dashboard",
                   meta: {
-                    label: "Dashboard",
+                    label: "Panel Główny",
                     icon: <HomeIcon />,
                   },
-                }]}
+                }, {
+                  name: "users",
+                  list: "/users",
+                  meta: {
+                    label: "Użytkownicy",
+                    icon: <PeopleIcon />,
+                  },
+                }, ]}
                 options={{
                   syncWithLocation: true,
                   warnWhenUnsavedChanges: true,
@@ -145,7 +155,7 @@ function App() {
                             <ThemedTitleV2
                               collapsed={collapsed}
                               text="Projekt Systemu"
-                              icon={<AppIcon />}
+                              icon={<BuildIcon />}
                             />
                           )}
                         >
@@ -159,6 +169,7 @@ function App() {
                     />
                     <Route path="/dashboard" element={<DashboardPage />} />
                     <Route path="*" element={<ErrorComponent />} />
+                    <Route path="/users" element={<UsersPage />} />
                   </Route>
                   <Route
                     element={
