@@ -1,5 +1,5 @@
 import { IResourceComponentsProps, useList } from "@refinedev/core";
-import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, Avatar, Typography } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, Avatar, Typography, Button } from '@mui/material';
 import { useEffect, useState } from "react";
 import 'chart.js/auto';
 
@@ -23,6 +23,28 @@ interface User {
 
   const [users, setUsers] = useState<User[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'ascending' | 'descending' | 'none' }>({ key: '', direction: 'none' });
+
+  const sortedUsers = [...users].sort((a, b) => {
+    if (sortConfig.direction === 'none' || sortConfig.key === '') {
+      return 0;
+    }
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'ascending' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'ascending' ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const requestSort = (key: string) => {
+    let direction = 'ascending';
+    if (sortConfig.key === key && sortConfig.direction === 'ascending') {
+      direction = 'descending';
+    }
+    setSortConfig({ key, direction });
+  };
 
   useEffect(() => {
     const myHeaders = new Headers();
@@ -57,34 +79,40 @@ interface User {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Typography variant="h4" gutterBottom>
-        Użytkownicy
-      </Typography>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Awatar</TableCell>
-              <TableCell>Dane</TableCell>
-              <TableCell>Login</TableCell>
-              <TableCell>Email</TableCell>
+    <Typography variant="h4" gutterBottom>
+      Użytkownicy
+    </Typography>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Awatar</TableCell>
+            <TableCell>
+              <Button onClick={() => requestSort('name')}>Dane</Button>
+            </TableCell>
+            <TableCell>
+              <Button onClick={() => requestSort('nickname')}>Login</Button>
+            </TableCell>
+            <TableCell>
+              <Button onClick={() => requestSort('email')}>Email</Button>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {sortedUsers.map((user) => (
+            <TableRow key={user.user_id}>
+              <TableCell component="th" scope="row">
+                <Avatar alt={user.name} src={user.picture} sx={{ width: 56, height: 56 }} />
+              </TableCell>
+              <TableCell>{user.name}</TableCell>
+              <TableCell>{user.nickname}</TableCell>
+              <TableCell>{user.email}</TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.user_id}>
-                <TableCell component="th" scope="row">
-                  <Avatar alt={user.name} src={user.picture} sx={{ width: 56, height: 56 }} />
-                </TableCell>
-                <TableCell>{user.name}</TableCell>
-                <TableCell>{user.nickname}</TableCell>
-                <TableCell>{user.email}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </Box>
   );
 };
 
