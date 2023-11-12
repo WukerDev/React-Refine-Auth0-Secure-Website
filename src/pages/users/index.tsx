@@ -1,5 +1,5 @@
 import { IResourceComponentsProps, useList } from "@refinedev/core";
-import { Typography, Grid, Card, CardContent, Box } from "@mui/material";
+import { Typography, Grid, Card, CardContent, Box, Avatar } from "@mui/material";
 import { useEffect, useState } from "react";
 import 'chart.js/auto';
 
@@ -15,6 +15,8 @@ interface User {
   // Define the structure of user data, for example:
   user_id: string;
   name: string;
+  picture: string;
+  nickname: string;
   // Add other user fields as per your API response
 }
 
@@ -53,12 +55,30 @@ interface User {
   }
 
   return (
-    <div>
-      <h1>Users</h1>
-      {users.map(user => (
-        <div key={user.user_id}>{user.name}</div> // Render user data
+    <Box sx={{ flexGrow: 1 }}>
+    <Typography variant="h4" gutterBottom>
+      Users
+    </Typography>
+    <Grid container spacing={2}>
+      {users.map((user) => (
+        <Grid item xs={12} sm={6} md={4} key={user.user_id}>
+          <Card>
+            <CardContent>
+              <Avatar 
+                alt={user.name} 
+                src={user.picture} 
+                sx={{ width: 56, height: 56 }}
+              />
+              <Typography variant="h6">{user.name}</Typography>
+              <Typography variant="body2" color="text.secondary">
+              Nickname:  {user.nickname}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
       ))}
-    </div>
+    </Grid>
+  </Box>
   );
 };
 
