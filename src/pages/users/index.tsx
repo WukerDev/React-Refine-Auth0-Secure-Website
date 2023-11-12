@@ -88,41 +88,47 @@ interface User {
 
   return (
 
-        <Box sx={{ flexGrow: 1 }}>
-          <Typography variant="h4" gutterBottom>
-            Użytkownicy
-          </Typography>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 650 }} aria-label="simple table">
-              <TableHead>
-                <TableRow>
-                  <TableCell>Awatar</TableCell>
-                  <TableCell>
-                    <Button onClick={() => requestSort('name')}>Dane{getSortDirectionIndicator('name')}</Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button onClick={() => requestSort('nickname')}>Login{getSortDirectionIndicator('nickname')}</Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button onClick={() => requestSort('email')}>Email{getSortDirectionIndicator('email')}</Button>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {sortedUsers.map((user) => (
-                  <TableRow key={user.user_id}>
-                    <TableCell component="th" scope="row">
-                      <Avatar alt={user.name} src={user.picture} sx={{ width: 56, height: 56 }} />
-                    </TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.nickname}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Box>
+    <Box sx={{ flexGrow: 1 }}>
+    <Typography variant="h4" gutterBottom>
+      Użytkownicy
+    </Typography>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>AWATAR</TableCell>
+            <TableCell>
+              <Button onClick={() => requestSort('name')}>Dane{getSortDirectionIndicator('name')}</Button>
+            </TableCell>
+            <TableCell>
+              <Button onClick={() => requestSort('nickname')}>Login{getSortDirectionIndicator('nickname')}</Button>
+            </TableCell>
+            <TableCell>
+              <Button onClick={() => requestSort('email')}>Email{getSortDirectionIndicator('email')}</Button>
+            </TableCell>
+            <TableCell>OPCJE</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {sortedUsers.map((user) => (
+            <TableRow key={user.user_id}>
+              <TableCell component="th" scope="row">
+                <Avatar alt={user.name} src={user.picture} sx={{ width: 56, height: 56 }} />
+              </TableCell>
+              <TableCell>{user.name}</TableCell>
+              <TableCell>{user.nickname}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>
+                <Button sx={{ background: 'blue', color: 'white', borderRadius: 4, '&:hover': { background: 'black' }, mr: 1 }}>EDYTUJ</Button>
+                <Button sx={{ background: 'red', color: 'white', borderRadius: 4, '&:hover': { background: 'black' }, mx: 1 }}>USUŃ</Button>
+                <Button sx={{ background: 'darkred', color: 'white', borderRadius: 4, '&:hover': { background: 'black', ml: 1 } }}>ZABLOKUJ</Button>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </Box>
   );
 };
 
