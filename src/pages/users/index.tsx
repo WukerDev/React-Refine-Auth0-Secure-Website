@@ -17,8 +17,7 @@ interface User {
   name: string;
   picture: string;
   nickname: string;
-  picture: string;
-  nickname: string;
+  email: string;
   // Add other user fields as per your API response
 }
 
@@ -65,9 +64,10 @@ interface User {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Photo</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Nickname</TableCell>
+              <TableCell>Awatar</TableCell>
+              <TableCell>Dane</TableCell>
+              <TableCell>Login</TableCell>
+              <TableCell>Email</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -78,6 +78,7 @@ interface User {
                 </TableCell>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.nickname}</TableCell>
+                <TableCell>{user.email}</TableCell>
               </TableRow>
             ))}
           </TableBody>
