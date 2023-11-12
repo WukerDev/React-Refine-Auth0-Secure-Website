@@ -1,5 +1,5 @@
 import { IResourceComponentsProps, useList } from "@refinedev/core";
-import { Typography, Grid, Card, CardContent, Box } from "@mui/material";
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Grid, Avatar, Typography } from '@mui/material';
 import { useEffect, useState } from "react";
 import 'chart.js/auto';
 
@@ -15,6 +15,8 @@ interface User {
   // Define the structure of user data, for example:
   user_id: string;
   name: string;
+  picture: string;
+  nickname: string;
   // Add other user fields as per your API response
 }
 
@@ -53,12 +55,33 @@ interface User {
   }
 
   return (
-    <div>
-      <h1>Users</h1>
-      {users.map(user => (
-        <div key={user.user_id}>{user.name}</div> // Render user data
-      ))}
-    </div>
+    <Box sx={{ flexGrow: 1 }}>
+      <Typography variant="h4" gutterBottom>
+        Użytkownicy
+      </Typography>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Photo</TableCell>
+              <TableCell>Name</TableCell>
+              <TableCell>Nickname</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.user_id}>
+                <TableCell component="th" scope="row">
+                  <Avatar alt={user.name} src={user.picture} sx={{ width: 56, height: 56 }} />
+                </TableCell>
+                <TableCell>{user.name}</TableCell>
+                <TableCell>{user.nickname}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 
