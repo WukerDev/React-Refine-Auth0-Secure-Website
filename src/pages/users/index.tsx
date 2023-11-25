@@ -89,11 +89,12 @@ interface User {
 
   return (
 
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, alignContent: 'center' }}>
     <TableContainer component={Paper}>
-    <Typography sx={{m: 2}} variant="h4" gutterBottom>
+    <Typography sx={{m: 2, alignContent: 'center'}} variant="h4" gutterBottom>
       Użytkownicy
     </Typography>
+    <Button sx={{ background: 'green', m:2, color: 'white', borderRadius: 4, '&:hover': { background: 'black' } }}>NOWY UŻYTWKOWNIK</Button>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -125,6 +126,7 @@ interface User {
                 <Button sx={{ background: 'blue', color: 'white', borderRadius: 4, '&:hover': { background: 'black' } }}>EDYTUJ</Button>
                 <Button sx={{ background: 'red', color: 'white', borderRadius: 4, '&:hover': { background: 'black' }, mx: 1 }}>USUŃ</Button>
                 <Button sx={{ background: 'darkred', color: 'white', borderRadius: 4, '&:hover': { background: 'black', } }}>ZABLOKUJ</Button>
+                <Button sx={{ background: 'purple', color: 'white', borderRadius: 4, '&:hover': { background: 'black', }, mx: 1 }}>LOGI</Button>
               </TableCell>
             </TableRow>
           ))}
