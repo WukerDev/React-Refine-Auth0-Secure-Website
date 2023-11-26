@@ -16,6 +16,7 @@ import {
   ThemedTitleV2,
 } from "@refinedev/mui";
 import PeopleIcon from '@mui/icons-material/People';
+
 import HomeIcon from '@mui/icons-material/Home';
 import { useAuth0 } from "@auth0/auth0-react";
 import CssBaseline from "@mui/material/CssBaseline";
