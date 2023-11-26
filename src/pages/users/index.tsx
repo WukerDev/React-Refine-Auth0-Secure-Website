@@ -35,24 +35,27 @@ interface User {
     if (sortConfig.direction === 'none' || sortConfig.key === '') {
       return 0;
     }
-    if (a[sortConfig.key] < b[sortConfig.key]) {
+  
+    const key = sortConfig.key as keyof User;
+  
+    if (a[key] < b[key]) {
       return sortConfig.direction === 'ascending' ? -1 : 1;
     }
-    if (a[sortConfig.key] > b[sortConfig.key]) {
+    if (a[key] > b[key]) {
       return sortConfig.direction === 'ascending' ? 1 : -1;
     }
     return 0;
   });
 
   const requestSort = (key: string) => {
-    let direction = 'ascending';
+    let direction: "ascending" | "descending" | "none" = 'ascending';
     if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-      direction = 'descending';
+        direction = 'descending';
     } else if (sortConfig.key === key && sortConfig.direction === 'descending') {
-      direction = 'none';
+        direction = 'none';
     }
     setSortConfig({ key, direction });
-  };
+};
 
   const getSortDirectionIndicator = (key: string) => {
     if (sortConfig.key === key) {
@@ -79,10 +82,9 @@ interface User {
         console.error('Error deleting user: ', error);
         setError(error.message);
       });
-  };
-  
-  useEffect(() => {
+  };  
 
+  useEffect(() => {
     const requestOptions: RequestInit = {
       method: 'GET',
       headers: myHeaders,
